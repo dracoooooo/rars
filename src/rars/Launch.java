@@ -563,7 +563,9 @@ public class Launch {
     // DPS 19 July 2012
     private void displayMiscellaneousPostMortem(Program program) {
         if (countInstructions) {
-            out.println("\n" + program.getRegisterValue("cycle"));
+            out.println("All instructions executed: " + program.getRegisterValue("cycle"));
+            out.println("Load instructions executed: " + program.getRegisterValue("load-count"));
+            out.println("Store instructions executed: " + program.getRegisterValue("store-count"));
         }
     }
 

@@ -3,6 +3,7 @@ package rars.riscv.instructions;
 import rars.ProgramStatement;
 import rars.SimulationException;
 import rars.riscv.hardware.AddressErrorException;
+import rars.riscv.hardware.ControlAndStatusRegisterFile;
 import rars.riscv.hardware.RegisterFile;
 import rars.riscv.BasicInstruction;
 import rars.riscv.BasicInstructionFormat;
@@ -55,6 +56,8 @@ public abstract class Store extends BasicInstruction {
         operands[1] = (operands[1] << 20) >> 20;
         try {
             store(RegisterFile.getValue(operands[2]) + operands[1], RegisterFile.getValueLong(operands[0]));
+            long storeCount = ControlAndStatusRegisterFile.getValueNoNotify("store-count");
+            ControlAndStatusRegisterFile.updateRegisterBackdoor("store-count", storeCount + 1);
         } catch (AddressErrorException e) {
             throw new SimulationException(statement, e);
         }
